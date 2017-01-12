@@ -18,7 +18,7 @@ var bookSchema = new Schema({
         default: 0
     },
     price: {
-        type: Currency,
+        type: Number,
         required: true
     },
     description: {
