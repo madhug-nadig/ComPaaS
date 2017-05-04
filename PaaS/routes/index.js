@@ -42,7 +42,25 @@ router.get('/create_instance', function(req, res, next) {
                 console.log(`${error}`);
             }
         });
-  }
+  	}
+
+  else{
+      console.log("The server will now run on :" + container_list[(load_index+1)%3] + "\n With IP:" + container_ips[(load_index+1)%3]);
+      const child = exec('lxc exec '+ container_list[(load_index++)%3] + ' -- node n1.js',
+          (error, stdout, stderr) => {
+              var standrd = `${stdout}`;
+              console.log(`${stdout}`);
+              if(`${stderr}`){
+                  console.log(`${stderr}`);
+              }
+              var for_sending = `${stdout}`;
+              //res.redirect(container_ips[load_index%3]+':8081');
+              if (error !== null) {
+                  console.log(`${error}`);
+              }
+          });
+  	}
+
 });
 
 module.exports = router;
