@@ -13,6 +13,12 @@ router.get('/create_instance', function(req, res, next) {
   var container_ips = ["10.1.125.26" ,"10.1.125.240", "10.1.125.133"];
   const exec = require('child_process').exec;
   
+
+  if(load_index > 2){
+  	console.log("Server overloaded, cannot create more containers");
+  	res.send("Sorry, server overloaded. Cannot create more containers. TRY LATER.");
+  }
+
   if(load_index == 0){
     const restarter = exec('sh restartplx.sh',
         (error, stdout, stderr) => {
@@ -22,7 +28,7 @@ router.get('/create_instance', function(req, res, next) {
                 console.log(`${stderr}`);
             }
             else{
-                console.log("The server will now run on :" + container_list[(load_index+1)%3] + "\n With IP:" + container_ips[(load_index+1)%3]);
+                console.log("The server will now run on :" + container_list[(load_index)%3] + "\n With IP:" + container_ips[(load_index+1)%3]);
                 const child = exec('lxc exec '+ container_list[(load_index++)%3] + ' -- node n1.js',
                     (error, stdout, stderr) => {
                         var standrd = `${stdout}`;
@@ -45,7 +51,7 @@ router.get('/create_instance', function(req, res, next) {
   	}
 
   else{
-      console.log("The server will now run on :" + container_list[(load_index+1)%3] + "\n With IP:" + container_ips[(load_index+1)%3]);
+      console.log("The server will now run on :" + container_list[(load_index)%3] + "\n With IP:" + container_ips[(load_index+1)%3]);
       const child = exec('lxc exec '+ container_list[(load_index++)%3] + ' -- node n1.js',
           (error, stdout, stderr) => {
               var standrd = `${stdout}`;
@@ -54,7 +60,6 @@ router.get('/create_instance', function(req, res, next) {
                   console.log(`${stderr}`);
               }
               var for_sending = `${stdout}`;
-              //res.redirect(container_ips[load_index%3]+':8081');
               if (error !== null) {
                   console.log(`${error}`);
               }
