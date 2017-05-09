@@ -8,7 +8,11 @@ router.get('/', function(req, res, next) {
 });
 
 /* Create an instance. */
-router.get('/create_instance', function(req, res, next) {
+router.post('/create_instance', function(req, res, next) {
+  console.log(req.body.data);
+  var obj = JSON.parse(req.body.data);
+  console.log("Userid: "  + obj.user);
+
   var container_list = ["first" ,"second", "third"];
   var container_ips = ["10.1.125.26" ,"10.1.125.240", "10.1.125.133"];
   const exec = require('child_process').exec;
