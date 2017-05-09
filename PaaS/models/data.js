@@ -13,7 +13,7 @@ var dataSchema = new Schema({
         required: true
     },
     value: {
-        type: [String],
+        type: Object,
         required: true
     }
 }, {
