@@ -36,7 +36,7 @@ router.post('/login', function(req, res, next) {
 
 /* Create an instance. */
 router.post('/create_instance', function(req, res, next) {
-  if(session_var.user){  
+  if(req.session.user){  
     console.log(req.body.data);
 
     var obj = JSON.parse(req.body.data);
