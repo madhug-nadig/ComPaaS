@@ -1,3 +1,14 @@
+/*
+
+LXC Commands:
+
+1) lxc launch upgraded <containername>
+2) lxc list | grep <containername< | awk '{print $6 }'
+3) lxc exec <containername> — git clone <url of git>
+4) lxc exec <containername> — comand'
+
+*/
+
 var express = require('express');
 var router = express.Router();
 var load_index = {OneUser: 0, TwoUser:0};
@@ -48,7 +59,8 @@ router.post('/create_instance', function(req, res, next) {
       res.status(403);
       res.end()
     }
-    var container_ips = { OneUser: ["10.1.125.26" ,"10.1.125.240", "10.1.125.133"], TwoUser : ["10.1.125.45" , "10.1.125.6", "10.1.125.27"] };
+
+    var container_ips = { OneUser: [], TwoUser : [] };
     var container_list = { OneUser: ["first" ,"second", "third"], TwoUser : ["fourth", "fifth", "sixth"] };
 
     //var container_ips = ["10.1.125.26" ,"10.1.125.240", "10.1.125.133"];
@@ -70,8 +82,8 @@ router.post('/create_instance', function(req, res, next) {
                   console.log(`${stderr}`);
               }
               else{
-                  console.log("The server will now run on :" + container_list[obj.user][(load_index[obj.user])%3] + "\n With IP:" + container_ips[obj.user][(load_index[obj.user])%3]);
-                  const child = exec('lxc exec '+ container_list[obj.user][(load_index[obj.user]++)%3] + ' -- node n1.js &',
+                  console.log("The server will now run on :" + container_list[obj.user][(load_index[obj.user])%3]);
+                  const child = exec('lxc launch upgraded '+ container_list[obj.user][(load_index[obj.user]++)%3] + ' &',
                       (error, stdout, stderr) => {
                           var standrd = `${stdout}`;
                           console.log(`${stdout}`);
@@ -79,6 +91,18 @@ router.post('/create_instance', function(req, res, next) {
                               console.log(`${stderr}`);
                           }
                           var for_sending = `${stdout}`;
+                          if (error !== null) {
+                              console.log(`${error}`);
+                          }
+                      });
+                  const get_ip = exec("lxc list | grep <containername< | awk '{print $6 }'",
+                      (error, stdout, stderr) => {
+                          var ip = `${stdout}`;
+                          console.log("Container IP: " + `${stdout}`);
+                          if(`${stderr}`){
+                              console.log(`${stderr}`);
+                          }
+                          container_ips[obj.user].push(ip);
                           if (error !== null) {
                               console.log(`${error}`);
                           }
@@ -92,8 +116,8 @@ router.post('/create_instance', function(req, res, next) {
     	}
 
     else{
-        console.log("The server will now run on :" + container_list[obj.user][(load_index[obj.user])%3] + "\n With IP:" + container_ips[obj.user][(load_index[obj.user])%3]);
-        const child = exec('lxc exec '+ container_list[obj.user][(load_index[obj.user]++)%3] + ' -- node n1.js &',
+        console.log("The server will now run on :" + container_list[obj.user][(load_index[obj.user])%3]);
+        const child = exec('lxc launch upgraded '+ container_list[obj.user][(load_index[obj.user]++)%3] + ' `&',
             (error, stdout, stderr) => {
                 var standrd = `${stdout}`;
                 console.log(`${stdout}`);
@@ -101,6 +125,18 @@ router.post('/create_instance', function(req, res, next) {
                     console.log(`${stderr}`);
                 }
                 var for_sending = `${stdout}`;
+                if (error !== null) {
+                    console.log(`${error}`);
+                }
+            });
+        const get_ip = exec("lxc list | grep <containername< | awk '{print $6 }'",
+            (error, stdout, stderr) => {
+                var ip = `${stdout}`;
+                console.log("Container IP: " + `${stdout}`);
+                if(`${stderr}`){
+                    console.log(`${stderr}`);
+                }
+                container_ips[obj.user].push(ip);
                 if (error !== null) {
                     console.log(`${error}`);
                 }
