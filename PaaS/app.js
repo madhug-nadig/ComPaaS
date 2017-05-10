@@ -4,6 +4,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var session = require('express-session');
+
 
 var routes = require('./routes/index');
 //var db = require('./routes/db');
@@ -23,6 +25,12 @@ db.once('open', function () {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+
+app.use(session({secret: 'ssshhhhh',
+      resave: true,
+      saveUninitialized: true
+  }
+));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
