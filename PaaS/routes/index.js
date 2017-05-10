@@ -61,7 +61,7 @@ router.post('/create_instance', function(req, res, next) {
     }
 
     var container_ips = { OneUser: [], TwoUser : [] };
-    var container_list = { OneUser: ["OneUser-Container1" ,"OneUser-Container2", "OneUser-Container3"], TwoUser : ["TwoUser-Container1", "TwoUser-Container2", "TwoUser-Container3"] };
+    var container_list = { OneUser: [], TwoUser : [] };
 
     //var container_ips = ["10.1.125.26" ,"10.1.125.240", "10.1.125.133"];
     const exec = require('child_process').exec;
@@ -82,8 +82,9 @@ router.post('/create_instance', function(req, res, next) {
                   console.log(`${stderr}`);
               }
               else{
-                  console.log("The server will now run on :" + container_list[obj.user][(load_index[obj.user])%3]);
-                  const child = exec('lxc launch upgraded '+ container_list[obj.user][(load_index[obj.user]++)%3] + ' &',
+                  container_list[obj.user].push("" + obj.user + "-Container" + (load_index[obj.user]++));
+                  console.log("The server will now run on :" + container_list[obj.user][(load_index[obj.user])]);
+                  const child = exec('lxc launch upgraded '+ obj.user + "-Container" + (load_index[obj.user]++) +  ' &',
                       (error, stdout, stderr) => {
                           var standrd = `${stdout}`;
                           console.log(`${stdout}`);
@@ -96,7 +97,7 @@ router.post('/create_instance', function(req, res, next) {
                           }
                       });
                   const get_ip = exec("lxc list | grep "+ container_list[obj.user][(load_index[obj.user])%3] + " | awk '{print $6 }'",
-                      (error, stdout, stderr) => {
+                     (error, stdout, stderr) => {
                           var ip = `${stdout}`;
                           console.log("Container IP: " + `${stdout}`);
                           if(`${stderr}`){
@@ -116,8 +117,9 @@ router.post('/create_instance', function(req, res, next) {
     	}
 
     else{
-        console.log("The server will now run on :" + container_list[obj.user][(load_index[obj.user])%3]);
-        const child = exec('lxc launch upgraded '+ container_list[obj.user][(load_index[obj.user]++)%3] + ' `&',
+        container_list[obj.user].push("" + obj.user + "-Container" + (load_index[obj.user]++));
+        console.log("The server will now run on :" + container_list[obj.user][(load_index[obj.user])]);
+        const child = exec('lxc launch upgraded '+ obj.user + "-Container" + (load_index[obj.user]++) + ' `&',
             (error, stdout, stderr) => {
                 var standrd = `${stdout}`;
                 console.log(`${stdout}`);
@@ -129,7 +131,7 @@ router.post('/create_instance', function(req, res, next) {
                     console.log(`${error}`);
                 }
             });
-          const get_ip = exec("lxc list | grep <"+ container_list[obj.user][(load_index[obj.user])%3] + "< | awk '{print $6 }'",
+          const get_ip = exec("lxc list | grep <"+ container_list[obj.user][(load_index[obj.user])] + "< | awk '{print $6 }'",
             (error, stdout, stderr) => {
                 var ip = `${stdout}`;
                 console.log("Container IP: " + `${stdout}`);
