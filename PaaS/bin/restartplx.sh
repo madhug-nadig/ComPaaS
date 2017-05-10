@@ -4,3 +4,9 @@ lxc stop third
 lxc start first
 lxc start second
 lxc start third
+lxc stop fourth
+lxc stop fifth
+lxc stop sixth
+lxc start fourth
+lxc start fifth
+lxc start sixth
