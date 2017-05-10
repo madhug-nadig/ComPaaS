@@ -95,7 +95,7 @@ router.post('/create_instance', function(req, res, next) {
                               console.log(`${error}`);
                           }
                       });
-                  const get_ip = exec("lxc list | grep <"+ container_list[obj.user][(load_index[obj.user])%3] + "< | awk '{print $6 }'",
+                  const get_ip = exec("lxc list | grep "+ container_list[obj.user][(load_index[obj.user])%3] + " | awk '{print $6 }'",
                       (error, stdout, stderr) => {
                           var ip = `${stdout}`;
                           console.log("Container IP: " + `${stdout}`);
