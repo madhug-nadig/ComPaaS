@@ -61,7 +61,7 @@ router.post('/create_instance', function(req, res, next) {
     }
 
     var container_ips = { OneUser: [], TwoUser : [] };
-    var container_list = { OneUser: ["first" ,"second", "third"], TwoUser : ["fourth", "fifth", "sixth"] };
+    var container_list = { OneUser: ["OneUser-Container1" ,"OneUser-Container2", "OneUser-Container3"], TwoUser : ["TwoUser-Container1", "TwoUser-Container2", "TwoUser-Container3"] };
 
     //var container_ips = ["10.1.125.26" ,"10.1.125.240", "10.1.125.133"];
     const exec = require('child_process').exec;
@@ -95,7 +95,7 @@ router.post('/create_instance', function(req, res, next) {
                               console.log(`${error}`);
                           }
                       });
-                  const get_ip = exec("lxc list | grep <containername< | awk '{print $6 }'",
+                  const get_ip = exec("lxc list | grep <"+ container_list[obj.user][(load_index[obj.user])%3] + "< | awk '{print $6 }'",
                       (error, stdout, stderr) => {
                           var ip = `${stdout}`;
                           console.log("Container IP: " + `${stdout}`);
@@ -129,7 +129,7 @@ router.post('/create_instance', function(req, res, next) {
                     console.log(`${error}`);
                 }
             });
-        const get_ip = exec("lxc list | grep <containername< | awk '{print $6 }'",
+          const get_ip = exec("lxc list | grep <"+ container_list[obj.user][(load_index[obj.user])%3] + "< | awk '{print $6 }'",
             (error, stdout, stderr) => {
                 var ip = `${stdout}`;
                 console.log("Container IP: " + `${stdout}`);
