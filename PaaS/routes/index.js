@@ -60,8 +60,10 @@ function createInstance(instanceName,image) {
 
 function deployInstance(instanceName,url, path) {
     const exec = require('child_process').execSync;
-    var r = exec('lxc exec '+ instanceName+ '-- git clone' + url,{ encoding: 'utf8' });
-    var e = exec('lxc exec '+ instanceName+ '-- node ' + path + ' &',{ encoding: 'utf8' });
+    require('child_process').execSync('lxc exec '+ instanceName+ ' -- git clone ' + url,{ encoding: 'utf8' });
+    console.log('cloned');
+    require('child_process').exec('lxc exec '+ instanceName+ ' -- node ' + path + '&',{ encoding: 'utf8' });
+    console.log("node program running");
 }
 
 /* Create an instance. */
@@ -121,7 +123,7 @@ router.post('/deploy_instance', function(req, res, next) {
         }
 
         console.log("Deploying code\n");
-        for(var iter =0; iter < container_list[obj.user.length]; iter++){
+        for(var iter =0; iter < load_index[obj.user]; iter++){
           console.log("Deploying: "+ container_list[obj.user][iter])
           deployInstance(container_list[obj.user][iter], obj.url, obj.path);
         }
