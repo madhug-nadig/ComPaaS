@@ -17,6 +17,7 @@ var session_var;
 var container_ips = { OneUser: [], TwoUser : [] };
 var container_list = { OneUser: [], TwoUser : [] };
 var url_ips = { OneUser: [], TwoUser : [] };
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if(req.session.user){
@@ -122,7 +123,7 @@ router.post('/deploy_instance', function(req, res, next) {
         console.log("Deploying code\n");
         for(var iter =0; iter < container_list[obj.user.length]; iter++){
           console.log("Deploying: "+ container_list[obj.user][iter])
-          deployInstance(container_list[obj.user][iter],'https://github.com/Jake1996/Project.git', '/Project/bin/www');
+          deployInstance(container_list[obj.user][iter], obj.url, obj.path);
         }
         console.log(container_ips);
         
