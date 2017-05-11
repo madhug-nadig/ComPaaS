@@ -48,38 +48,13 @@ router.post('/login', function(req, res, next) {
 
 
 function createInstance(instanceName,image) {
-    var ipReturn = "";
-    const exec = require('child_process').exec;
-    const child = exec('lxc launch '+image+' '+ instanceName,
-    (error, stdout, stderr) => {
-        var standrd = `${stdout}`;
-        console.log(`${stdout}`);
-        if(`${stderr}`){
-            console.log(`${stderr}`);
-        }
-        var for_sending = `${stdout}`;
-        if (error !== null) {
-            console.log(`${error}`);
-        }
-        else{ 
-          console.log(instanceName+" Successfully created");
-          sleep.sleep(4);
-          const get_ip = exec("lxc list | grep "+ instanceName + " | awk '{print $6 }'",
-              (error, out, stderr) => {
-                  var ip = `${out}`;
-                  ipReturn = ip.trim();
-                  console.log("Container "+instanceName+" IP: " + ip);
-                  if(`${stderr}`){
-                      console.log(`${stderr}`);
-                  }
-                  if (error !== null) {
-                      console.log(`${error}`);
-                  }
-              });
-             
-        }
-      });
-    return ipReturn;
+    const exec = require('child_process').execSync;
+    var returnValue = exec('lxc launch '+image+' '+ instanceName,{ encoding: 'utf8' });
+    console.log(instanceName+" Successfully created");
+    sleep.sleep(4);
+    returnValue = exec("lxc list | grep "+ instanceName + " | awk '{print $6 }'",{ encoding: 'utf8' });
+    console.log("Container "+instanceName+" IP: " + returnValue.trim());
+    return returnValue.trim();
 }
 /* Create an instance. */
 router.post('/create_instance', function(req, res, next) {
@@ -102,27 +77,22 @@ router.post('/create_instance', function(req, res, next) {
         	res.end();
         }
 
-        //const exec = require('child_process').exec;
-
         //create a load Balancer for the user
         if(load_index[obj.user] == 0) {
             console.log("Creating Load balancer for : "+obj.user);
-            //var userIp = createInstance(obj.user,'load');
             url_ips[obj.user].push(createInstance(obj.user,'load'));
             console.log(url_ips);
             container_list[obj.user].push("" + obj.user + "-Container" + (load_index[obj.user]));
             console.log("Adding container : "+container_list[obj.user][container_list[obj.user].length-1]);
             load_index[obj.user]++;
-            userIp = createInstance(obj.user,'load');
-            container_ips[obj.user].push(userIp);
+            container_ips[obj.user].push(createInstance(container_list[obj.user][container_list[obj.user].length-1],'upgraded'));
             console.log(container_ips);
         }
         else {
             container_list[obj.user].push("" + obj.user + "-Container" + (load_index[obj.user]));
             console.log("Adding container : "+container_list[obj.user][container_list[obj.user].length-1]);
             load_index[obj.user]++;
-            var userIp = createInstance(container_list[obj.user][container_list[obj.user].length-1],'upgraded');
-            container_ips[obj.user].push(userIp);
+            container_ips[obj.user].push(createInstance(container_list[obj.user][container_list[obj.user].length-1],'upgraded'));
             console.log(container_ips);
         }
     }
