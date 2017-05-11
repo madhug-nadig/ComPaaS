@@ -56,6 +56,13 @@ function createInstance(instanceName,image) {
     console.log("Container "+instanceName+" IP: " + returnValue.trim());
     return returnValue.trim();
 }
+
+function deployInstance(instanceName,url, path) {
+    const exec = require('child_process').execSync;
+    var r = exec('lxc exec '+ instanceName+ '-- git clone' + url,{ encoding: 'utf8' });
+    var e = exec('lxc exec '+ instanceName+ '-- node ' + path + ' &',{ encoding: 'utf8' });
+}
+
 /* Create an instance. */
 router.post('/create_instance', function(req, res, next) {
     if(req.session.user){  
@@ -72,9 +79,9 @@ router.post('/create_instance', function(req, res, next) {
         }
 
         if(load_index[obj.user] > 2){
-        	console.log("Server overloaded, cannot create more containers");
-        	res.send("Sorry, server overloaded. Cannot create more containers. TRY LATER.");
-        	res.end();
+          console.log("Server overloaded, cannot create more containers");
+          res.send("Sorry, server overloaded. Cannot create more containers. TRY LATER.");
+          res.end();
         }
 
         //create a load Balancer for the user
@@ -95,6 +102,29 @@ router.post('/create_instance', function(req, res, next) {
             container_ips[obj.user].push(createInstance(container_list[obj.user][container_list[obj.user].length-1],'upgraded'));
             console.log(container_ips);
         }
+    }
+});
+
+/* Create an instance. */
+router.post('/deploy_instance', function(req, res, next) {
+    if(req.session.user){  
+
+        var obj = JSON.parse(req.body.data);
+        console.log("Userid: "  + obj.user);
+
+        if(obj.user != "OneUser" && obj.user != "TwoUser"){
+          console.log("Invalid user");
+          res.status(403);
+          res.send("Invalid username. Forbidden");
+          res.end()
+        }
+
+        console.log("Deploying code\n");
+        for(var iter =0; iter < container_list[obj.user.length]; iter++){
+          deployInstance(container_list[obj.user][iter],'https://github.com/Jake1996/Project.git', '/Project/bin/www');
+        }
+        console.log(container_ips);
+        
     }
 });
 
