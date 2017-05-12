@@ -7,7 +7,12 @@ var bookSchema = new Schema({
         type: String,
         required: true,
         unique: true
-    },     
+    },
+    userkey: {
+        type: String,
+        required: true,
+        unique: true
+    },
     category: {
         type: String,
         required: true

@@ -20,7 +20,7 @@ var mongoose = require('mongoose'),
 var books = require('./models/books');
 
 // Connection URL
-var url = 'mongodb://localhost:27017/bookkart';
+var url = 'mongodb://localhost:27017/paas';
 
 mongoose.connect(url);
 var db = mongoose.connection;
