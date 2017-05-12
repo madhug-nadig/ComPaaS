@@ -11,6 +11,8 @@ LXC Commands:
 
 var express = require('express');
 var sleep = require('sleep');
+var request = require('request');
+
 var router = express.Router();
 var load_index = {OneUser: 0, TwoUser:0};
 var session_var;
@@ -90,13 +92,36 @@ router.post('/create_instance', function(req, res, next) {
         //create a load Balancer for the user
         if(load_index[obj.user] == 0) {
             console.log("Creating Load balancer for : "+obj.user);
-            url_ips[obj.user].push(createInstance(obj.user,'load'));
+            url_ips[obj.user].push(createInstance(obj.user,'loadBalancer'));
             console.log(url_ips);
+            require('child_process').exec('lxc exec '+ obj.user+ ' -- node LoadBalancer/bin/www&',{ encoding: 'utf8' });
             container_list[obj.user].push("" + obj.user + "-Container" + (load_index[obj.user]));
             console.log("Adding container : "+container_list[obj.user][container_list[obj.user].length-1]);
             load_index[obj.user]++;
             container_ips[obj.user].push(createInstance(container_list[obj.user][container_list[obj.user].length-1],'upgraded'));
             console.log(container_ips);
+
+            var headers = {
+                'User-Agent':       'Super Agent/0.0.1',
+                'Content-Type':     'application/json'
+            }
+            var options = {
+                url: 'http://'+ url_ips[obj.user] +':3000/master/'+container_ips[obj.user][container_ips[obj.user].length-1] ,
+                method: 'GET',
+                headers: headers,
+                qs: req.params.param
+            }
+
+            request(options, function (error, response, body) {
+                console.log("Sending container IP to loadbalancer");
+                if (!error && response.statusCode == 200) {
+                    console.log("LB sent container IP");
+                }
+                else{
+                  console.log("Error: " + error);
+                }
+            });
+
         }
         else {
             container_list[obj.user].push("" + obj.user + "-Container" + (load_index[obj.user]));
@@ -104,6 +129,27 @@ router.post('/create_instance', function(req, res, next) {
             load_index[obj.user]++;
             container_ips[obj.user].push(createInstance(container_list[obj.user][container_list[obj.user].length-1],'upgraded'));
             console.log(container_ips);
+
+            var headers = {
+                'User-Agent':       'Super Agent/0.0.1',
+                'Content-Type':     'application/json'
+            }
+            console.log(req.params.param);
+            var options = {
+                url: 'http://'+ url_ips[obj.user] +':3000/master/'+container_ips[obj.user][container_ips[obj.user].length-1] ,
+                method: 'GET',
+                headers: headers,
+                qs: req.params.param
+            }
+
+            request(options, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    console.log("LB sent container IP");
+                }
+                else{
+                  console.log("Error: " + error);
+                }
+            });
         }
     }
 });
