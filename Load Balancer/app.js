@@ -1,13 +1,3 @@
-/*
-    The stuff the REST API should do. 
-        *Create or remove a category
-        *Add a book, descroption
-        *Query for all books in a category
-        *Determine the price of the book
-        *Remove the book after getting selected
-        *Remove the book after it goes out of stock
-        *Modify the price of the book
-*/
 
 
 var mongoose = require('mongoose'),
@@ -17,22 +7,7 @@ var mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     path = require('path');
 
-var books = require('./models/books');
-
-// Connection URL
-var url = 'mongodb://localhost:27017/bookkart';
-
-mongoose.connect(url);
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-
-db.once('open', function () {
-    // we're connected!
-    console.log("Connected correctly to server");
-});
-
-
-var bookRouter = require('./routes/bookRouter');
+var requestHandler = require('./routes/requestHandler');
 
 
 var app = express();
@@ -41,8 +16,10 @@ var app = express();
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
 
-app.use('/', bookRouter);
+app.use('/', requestHandler);
 
 
 // catch 404 and forward to error handler
