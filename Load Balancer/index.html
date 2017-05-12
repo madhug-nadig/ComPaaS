@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hidden iframe</title>
+    <script type="text/javascript">
+        xhr = new XMLHttpRequest();
+        /*
+        only for reference purpose delete once done
+        function getDetails() {
+            xhr.onreadystatechange = updateDetails;
+            xhr.open("GET", "http://localhost/webtechexamples/ex4.php?usn=" +usn.value, true);
+            xhr.send();
+        }
+        function updateDetails() {
+            if(xhr.readyState==4 && xhr.status == 200){
+                arr = xhr.responseText.split(";");
+                dep = document.getElementById("dp");
+                dep.value = arr[1];
+                grade = document.getElementById("grade");
+                grade.value = arr[2];
+                usn = document.getElementById("usn");
+                usn.value = arr[0];
+            }
+        }
+        function register() {
+            xhr.abort();
+            xhr.onreadystatechange = showStatus;
+            xhr.open("POST","http://localhost/webtechexamples/ex4b.php",true);
+            xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xhr.send("usn="+usn.value+"&dep="+dep.value+"&grd="+grade.value);
+        }
+        function showStatus() {
+            if(xhr.readyState==4&&xhr.status==200) {
+                newdiv = document.createElement("div");
+                newdiv.innerHTML = xhr.responseText;
+                document.body.appendChild(newdiv);
+            }
+        }
+        */
+        function createNewCategory() {
+            var category = document.getElementById("newCategory");
+            if(category.value!="") {
+                xhr.abort();
+                xhr.onreadystatechange = updatefunctionhere;
+                xhr.open("GET", "http://localhost/index.php?category=" +category.value, true);
+                xhr.send();
+            }
+        }
+        function removeCategory() {
+            var category=document.getElementById("removeCategoryOption");
+
+        }
+        function addBook() {
+            var name = document.getElementById("bookName").value;
+            var category = document.getElementById("bookCategory").value;
+            var price = document.getElementById("bookPrice").value;
+            var copies = document.getElementById("bookCopies").value;
+            if(name!=""){
+
+            }
+        }
+        function queryBook() {
+            var category = document.getElementById("bookQueryCategory").value;
+            var table = document.getElementById("queriedBooks");
+
+        }
+        function modBookPrice() {
+            var name = document.getElementById("modifyBookName");
+            var price = document.getElementById("newBookPrice");
+        
+        }
+    </script>
+<head>
+<body>
+    <h1> Book Store</h1><br/>
+    <div id="createCategory">
+        <h2> Create Category</h2><br/>
+        Category Name : <input type="text" id="newCategory" >
+            <input type="button" id="newCategoryBt" value="Create new Category" onclick="createNewCategory()">
+    </div>
+    <div id="removeCategory">
+        <h2> Remove Category</h2><br/>
+         Select Category : <select id="removeCategoryOption">
+            <option value="option value here">drop down options here</option>
+        </select>
+            <input type="button" id="removeCategoryBt" value="Remove Category" onclick="removeCategory()">
+    </div>
+    <div id="addBook">
+        <h2>Add Book </h2><br/>
+        Book Name: <input type="text" id="bookName">
+        Book Category: <select id="bookCategory">
+            <option value="option value here">drop down options here</option>
+        </select>
+        Book Price : <input type="number" value="0" id="bookPrice">
+        No of copies : <input type="number" value="0" id="bookCopies">
+        <input type="button" id="addBookBt" value="Add Book" onclick="addBook()">
+    </div>
+    <div id="queryCategory">
+        <h2>Query Books Under A Category</h2>
+        Book Category: <select id="bookQueryCategory">
+            <option value="option value here">drop down options here</option>
+        </select>
+        <input type="button" value="Query Books" onclick="queryBook()"><br/>
+        <table id="queriedBooks">
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>No of copies</th>
+                <th>Buy</th>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <h2>Modify Price of the book</h2>
+        Book Name : <input type="text" id="modifyBookName">
+        New Price : <input type="number" value="0" id="newBookPrice">
+        <input type="button" value="Modify Book Price" onclick="modBookPrice()"><br/>
+    </div>
+
+</body>
+</html>
