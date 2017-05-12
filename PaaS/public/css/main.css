@@ -15,7 +15,23 @@ h1, h2, h3, h4, h5, h6, p, .btn, .navbar-nav a, .form-control, .list-inline, sma
   font-family: 'Montserrat', sans-serif;
 }
 
-#submit{
+.custom{
+  height: 100vh;
+}
+
+.custom div{
+  padding-top: 100px;
+}
+
+#request{
+  background-color: black;
+}
+
+#deploy{
+  background-color: gray;
+}
+
+.sub{
   display: block;
   margin: auto;
   font-size: 20px;
@@ -42,7 +58,7 @@ h1 {
 h2 {
   font-size: 40px;
   line-height: 40px;
-  etter-spacing: -0.5px;
+  letter-spacing: -0.5px;
   color: #ffffff;
   font-weight: 700;
 }

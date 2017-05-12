@@ -1,22 +1,127 @@
-<style>
-	.con{
-		text-align:center;
-	}
-	.btn{
-		margin-top:8%;
-	}
-
-</style>
-<div class = "con">
-		<center>
-			<input type = "text" placeholder="Enter User ID" required id = "us"></input>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="logo" href="index.html"><h4>88Coderz</h4></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#top" class="scroll">Back to Top</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+        
+    <header>
+      <div class="container"  id="top">
+        <div class="row">
+          <div class="col-xs-6">
+            <a href="index.html"><h2>88Coderz</h2></a>
+          </div>
+          <div class="col-xs-6 signin text-right navbar-nav">
+          </div>
+        </div>
+        
+        <div class="row header-info">
+          <div class="col-sm-10 col-sm-offset-1 text-center">
+            <h1 class="wow fadeIn">ConPaas</h1>
+            <br />
+            <p class="lead wow fadeIn" data-wow-delay="0.5s">Container Platform as a service <br>
+            We provide isolated containers so that the users can run their programs on the cloud with high avaialabilty</p>
+            <br />
+              
+            <div class="row">
+              <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+                <div class="row">
+                  <div class="col-xs-6 text-right wow fadeInUp" data-wow-delay="1s">
+                    <a href="#request" class="btn btn-secondary btn-lg scroll">Request Containers</a>
+                  </div>
+                  <div class="col-xs-6 text-left wow fadeInUp" data-wow-delay="1.4s">
+                    <a href="#deploy" class="btn btn-primary btn-lg scroll">Deploy Containers</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <div class="mouse-icon hidden-xs">
+				<div class="scroll"></div>
+			</div>
 			
-			<button class="btn btn-success" onclick="createInstance()" >CREATE INSTANCE</button>
-			<div style= "color:red;display:none" id = "err"></div>
-			<input type = "text" placeholder="Git repo" required id = "repo"></input>
-			<input type = "text" placeholder="Enter Path" required id = "path"></input>
-			
-			<button class="btn btn-success" onclick="deployInstance()" >DEPLOY Instance</button>
+    <section id="request" class="custom">
+    		<div class="container">
+    			<center><h2>Request Containers</h2></center>
+    		</div>
+          <div class="container">
+              <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
+                <label for="uid"><h3>Enter Your UserId</h3></label>
+                <hr class="line purple">
+                <input type="text" name="uid" class="form-control" id="uid">  
+              </div>
+              <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
+                <label><h3>Request Container</h3></label>
+                <hr class="line yellow">
+                <button class="btn btn-info sub" onclick="createInstance()" >CREATE INSTANCE</button>
+ 				<div style= "color:red;display:none" id = "err"></div>
+              </div>
+          </div>
+    </section>
+    <section id="deploy" class="custom">
+    		<div class="container">
+    			<center><h2>Deploy Containers</h2></center>
+    		</div>
+          <div class="container">
+              <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
+                <label for="link"><h3>Enter Your Projects' GitHub Link</h3></label>
+                <hr class="line purple">
+				<input type = "text" class="form-control" placeholder="Git repo" required id = "repo"></input>
+                <label for="link"><h3>Enter Your Projects' GitHub Link</h3></label>
+				<input type = "text" placeholder="Enter Path" required id = "path"></input>
+              </div>
+              <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
+                <label><h3>Deploy Container</h3></label>
+				<button class="btn btn-info sub" onclick="deployInstance()" >DEPLOY Instance</button>
+                <hr class="line yellow">
+                <input type="submit" value="Deploy!" class="btn btn-info sub" id="submit1">
 
-		</center>
-</div>
+              </div>
+          </div>
+    </section>
+        
+         
+    
+    <footer>
+      <div class="container">
+        
+        <div class="row">
+          <div class="col-sm-8 margin-20">
+            <ul class="list-inline social">
+              <li>Connect with us on</li>
+              <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+              <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+              <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+            </ul>
+          </div>
+          
+          <div class="col-sm-4 text-right">
+            <p><small>Copyright &copy; 2017. All rights reserved. <br>
+	            Created by Team 88Coderz</small></p>
+          </div>
+        </div>
+        
+      </div>
+    </footer>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.0.min.js"><\/script>')</script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
